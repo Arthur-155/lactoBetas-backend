@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin("*")
 @RequestMapping("v1/betas")
 public class BetasController {
 
