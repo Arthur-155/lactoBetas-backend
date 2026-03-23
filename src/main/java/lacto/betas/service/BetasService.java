@@ -59,6 +59,21 @@ public class BetasService {
         }
     }
 
+    public void deleteById(Long id){
+        repository.deleteById(id);
+    }
+
+    public Betas update(Betas betas){
+        Betas updated = repository.findById(betas.getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        updated.setName(betas.getName());
+        updated.setDescription(betas.getDescription());
+        updated.setData(betas.getData());
+
+        return repository.save(updated);
+    }
+
 }
 
 

@@ -4,7 +4,6 @@ import lacto.betas.domain.Betas;
 import lacto.betas.service.BetasService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -41,4 +40,13 @@ public class BetasController {
         return service.findAllPositionOrdered();
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id){
+        service.deleteById(id);
+    }
+
+    @PutMapping
+    public Betas update(@RequestBody Betas betas){
+        return service.update(betas);
+    }
 }

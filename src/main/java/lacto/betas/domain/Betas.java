@@ -17,6 +17,6 @@ public class Betas {
     private String name;
     private String description;
     private String data;
-    private int position;
+    private Integer position;
     private String url;
 }
