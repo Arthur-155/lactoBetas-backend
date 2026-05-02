@@ -39,25 +39,24 @@ public class BetasService {
 
         if (list.isEmpty()){return;}
 
-        Betas first = list.getFirst();
+        Betas first = list.getFirst();//posicao 1, o topo
 
         for(int i = 1; i < list.size(); i++){
-            list.get(i).setPosition(i);
+            list.get(i).setPosition(i);//trocando index, por posicao
         }
 
-        first.setPosition(list.size());
+        first.setPosition(list.size());//topo vai pro final
 
         repository.saveAll(list);
-
-        Betas newTop = repository.findAllByOrderByPositionAsc().getFirst();
-        webHook(newTop);
+//        Betas newTop = repository.findAllByOrderByPositionAsc().getFirst();
+//        webHook(newTop);
     }
 
-    public void webHook(Betas betas){
-        if(betas.getUrl() != null && !betas.getUrl().isBlank()){
-            restTemplate.postForObject(betas.getUrl(),betas,String.class);
-        }
-    }
+//    public void webHook(Betas betas){
+//        if(betas.getUrl() != null && !betas.getUrl().isBlank()){
+//            restTemplate.postForObject(betas.getUrl(),betas,String.class);
+//        }
+//    }
 
     public void deleteById(Long id){
         repository.deleteById(id);
