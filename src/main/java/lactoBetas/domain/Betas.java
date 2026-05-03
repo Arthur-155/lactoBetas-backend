@@ -1,10 +1,12 @@
-package lacto.betas.domain;
+package lactoBetas.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,7 +20,7 @@ public class Betas {
     private Long id;
     private String name;
     private String description;
-    private String data;
+    private LocalDateTime data;
     private Integer position;
-    private String quantity;
+    private int quantity;
 }

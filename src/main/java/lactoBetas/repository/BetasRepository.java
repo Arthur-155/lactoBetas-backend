@@ -1,6 +1,6 @@
-package lacto.betas.repository;
+package lactoBetas.repository;
 
-import lacto.betas.domain.Betas;
+import lactoBetas.domain.Betas;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
