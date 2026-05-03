@@ -17,8 +17,8 @@ public class BetasUtils {
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         var Arthur = Betas.builder().id(1L).name("Arthur").description("teste1").position(1).quantity(2).data(DATA_TESTE).build();
-        var Gabriel = Betas.builder().id(1L).name("Gabriel").description("teste2").position(2).quantity(4).data(DATA_TESTE).build();
-        var Gustavo = Betas.builder().id(1L).name("Gustavo").description("teste3").position(3).quantity(6).data(DATA_TESTE).build();
+        var Gabriel = Betas.builder().id(2L).name("Gabriel").description("teste2").position(2).quantity(4).data(DATA_TESTE).build();
+        var Gustavo = Betas.builder().id(3L).name("Gustavo").description("teste3").position(3).quantity(6).data(DATA_TESTE).build();
         return new ArrayList<>(List.of(Arthur, Gabriel, Gustavo));
     }
 

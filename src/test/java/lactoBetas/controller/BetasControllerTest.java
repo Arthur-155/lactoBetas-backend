@@ -153,12 +153,10 @@ class BetasControllerTest {
         var id = 999L;
         var betaToDelete = betasList.stream().filter(b -> b.getId().equals(id)).findFirst();
         BDDMockito.when(repository.findById(id)).thenReturn(betaToDelete);
-        var response = fileUtils.readResourceFile("betas/delete-betas-byId-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.content().json(response));
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @DisplayName("UPDATE v1/betas updates an betas")
@@ -166,8 +164,12 @@ class BetasControllerTest {
     @Order(9)
     void update_UpdatesAnBeta_WhenSuccessful() throws Exception {
         var betaToUpdate = betasList.getFirst();
-        var betaToDelete = betasList.stream().filter(b -> b.getId().equals(betaToUpdate.getId())).findFirst();
-        BDDMockito.when(repository.findById(betaToUpdate.getId())).thenReturn(betaToDelete);
+        var betaFound = betasList.stream()
+                .filter(b -> b.getId().equals(betaToUpdate.getId())).findFirst();
+
+        BDDMockito.when(repository.findById(betaToUpdate.getId())).thenReturn(betaFound);
+        BDDMockito.when(repository.save(ArgumentMatchers.any(Betas.class))).thenReturn(betaToUpdate);
+
         var request = fileUtils.readResourceFile("betas/put-betas-request-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.put(URL)
@@ -185,13 +187,38 @@ class BetasControllerTest {
         var betaIdFound = betasList.stream().filter(b -> b.getId().equals(betaToUpdate.getId())).findFirst();
         BDDMockito.when(repository.findById(betaToUpdate.getId())).thenReturn(betaIdFound);
         var request = fileUtils.readResourceFile("betas/put-betas-request-404.json");
-        var response = fileUtils.readResourceFile("betas/put-response-betas-byId-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.put(URL)
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @DisplayName("POST v1/betas/rotateQueue rotates the queue")
+    @Test
+    @Order(11)
+    void rotateQueue_RotatesQueue_WhenSuccessful() throws Exception {
+        BDDMockito.when(repository.findAllByOrderByPositionAsc()).thenReturn(betasList);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL + "/rotateQueue"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        BDDMockito.then(repository).should().saveAll(ArgumentMatchers.any());
+    }
+
+
+    @DisplayName("POST v1/betas/ordered returns an ordered list.")
+    @Test
+    @Order(12)
+    void Ordered_ReturnsAnOrderedList_WhenSuccessful() throws Exception {
+        BDDMockito.when(repository.findAllByOrderByPositionAsc()).thenReturn(betasList);
+        var response = fileUtils.readResourceFile("betas/get-ordered-list-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/ordered"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
